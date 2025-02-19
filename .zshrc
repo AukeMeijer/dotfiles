@@ -1,10 +1,3 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # eval "$(/opt/homebrew/bin/brew shellenv)"
 
 ### Added by Zinit's installer
@@ -21,20 +14,39 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 ### End of Zinit's installer chunk
 
-# install powerlevel10k
-zinit ice depth=1; zinit light romkatv/powerlevel10k
-
-# some packages
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
 
+setopt extended_glob null_glob
+
+# Configure standard path
+path=(
+  $path
+  $HOME/.config/scripts
+)
+
+# Remove duplicate entries and nox-existent directories
+typeset -U path
+path=($^path(N-/))
+
+export PATH
+
+# Set vim editing modes
+set -o vi
+
+export VISUAL=nvim
+export EDITOR=nvim
+export TERM="tmux-256color"
+
+export BROWSER="firefox"
+
 # load autocompletions
 autoload -U compinit && compinit
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# Install oh-my-posh and use the specified conf file
+eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/ohmyposh.toml)"
 
 # keybindings
 bindkey -e
@@ -66,27 +78,13 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 alias c='clear'
 alias vim='nvim'
 alias ls='eza --long --icons=always --no-permissions --git  --color=always --group-directories-first --no-user'
-# shell integration
+alias typora="open -a typora"
+
+#shell integration
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 
 
 export PATH="/usr/local/opt/openjdk/bin:$PATH"
 
-function sesh-sessions() {
-  {
-    exec </dev/tty
-    exec <&1
-    local session
-    session=$(sesh list -t -c | fzf --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡  ')
-    zle reset-prompt > /dev/null 2>&1 || true
-    [[ -z "$session" ]] && return
-    sesh connect $session
-  }
-}
-
-zle     -N             sesh-sessions
-bindkey -M emacs '\es' sesh-sessions
-bindkey -M vicmd '\es' sesh-sessions
-bindkey -M viins '\es' sesh-sessions
 

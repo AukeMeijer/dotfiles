@@ -40,6 +40,9 @@ final_space = true
       cache_duration = 'none'
       commit_icon = '@'
       fetch_status = true
+#      display_status = true
+#      display_stash_count = true
+#      display_upstream_icon = true
 
 [[blocks]]
   type = 'rprompt'
