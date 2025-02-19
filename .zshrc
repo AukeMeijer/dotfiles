@@ -34,7 +34,7 @@ path=($^path(N-/))
 export PATH
 
 # Set vim editing modes
-set -o vi
+# set -o vi
 
 export VISUAL=nvim
 export EDITOR=nvim
