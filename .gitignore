@@ -1,0 +1,5 @@
+# macOS metadata
+.DS_Store
+
+# Homebrew trust lock (local state, not config)
+homebrew/trust.json.lock
