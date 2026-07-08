@@ -75,6 +75,9 @@ ok "CLI tools installed"
 log "Installing Ghostty"
 brew install --cask ghostty
 
+log "Installing Visual Studio Code"
+brew install --cask visual-studio-code
+
 log "Installing Meslo Nerd Font"
 brew install --cask font-meslo-lg-nerd-font \
   || { brew tap homebrew/cask-fonts; brew install --cask font-meslo-lg-nerd-font; }
@@ -141,6 +144,50 @@ for entry in "$DOTFILES_DIR"/*; do
 done
 
 # ---------------------------------------------------------------------------
+# VS Code: symlink settings/keybindings from ~/.config/vscode (the dotfiles
+# copy, just linked above) into the location VS Code actually reads on
+# macOS, then install the extensions that config expects.
+# ---------------------------------------------------------------------------
+
+log "Linking VS Code settings"
+VSCODE_USER_DIR="$HOME/Library/Application Support/Code/User"
+mkdir -p "$VSCODE_USER_DIR"
+for f in settings.json keybindings.json; do
+  target="$VSCODE_USER_DIR/$f"
+  if [[ -e "$target" && ! -L "$target" ]]; then
+    mv "$target" "${target}.bak.$(date +%s)"
+    warn "backed up existing $target"
+  fi
+  ln -sfn "$HOME/.config/vscode/$f" "$target"
+  ok "linked $target"
+done
+
+if have code; then
+  CODE_BIN="code"
+elif [[ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" ]]; then
+  CODE_BIN="/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
+else
+  CODE_BIN=""
+fi
+
+if [[ -n "$CODE_BIN" ]]; then
+  log "Installing VS Code extensions"
+  for ext in \
+    vscodevim.vim jdinhlife.gruvbox llvm-vs-code-extensions.vscode-clangd \
+    eamodio.gitlens esbenp.prettier-vscode dbaeumer.vscode-eslint \
+    ms-python.python ms-python.vscode-pylance \
+    vscode-icons-team.vscode-icons streetsidesoftware.code-spell-checker; do
+    if "$CODE_BIN" --install-extension "$ext" --force >/dev/null; then
+      ok "extension: $ext"
+    else
+      warn "failed to install extension: $ext"
+    fi
+  done
+else
+  warn "VS Code CLI not found, skipping extension install"
+fi
+
+# ---------------------------------------------------------------------------
 # zsh: ZDOTDIR + required dirs
 # (on macOS the system-wide env file is /etc/zshenv, not /etc/zsh/zshenv)
 # ---------------------------------------------------------------------------
@@ -173,4 +220,5 @@ echo "Next steps:"
 echo "  - Log out / back in (or open a new terminal) to pick up the shell + ZDOTDIR change"
 echo "  - Launch Ghostty and confirm MesloLGS Nerd Font Mono is selected as its font"
 echo "  - Open nvim once to let it fetch plugins via vim.pack, then run :Mason to install LSP servers"
+echo "  - Open VS Code and reload the window so the Gruvbox theme takes effect"
 echo "  - Config source lives in $DOTFILES_DIR, symlinked into ~/.config"

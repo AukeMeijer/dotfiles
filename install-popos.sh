@@ -244,6 +244,27 @@ else
 fi
 
 # ---------------------------------------------------------------------------
+# VS Code — no default apt package; add Microsoft's official repo
+# ---------------------------------------------------------------------------
+
+if ! have code; then
+  log "Installing Visual Studio Code"
+  sudo apt install -y wget gpg
+  sudo mkdir -p -m 755 /etc/apt/keyrings
+  wget -qO- https://packages.microsoft.com/keys/microsoft.asc \
+    | gpg --dearmor \
+    | sudo tee /etc/apt/keyrings/packages.microsoft.gpg >/dev/null
+  sudo chmod go+r /etc/apt/keyrings/packages.microsoft.gpg
+  echo "deb [arch=$DPKG_ARCH signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" \
+    | sudo tee /etc/apt/sources.list.d/vscode.list >/dev/null
+  sudo apt update
+  sudo apt install -y code
+  ok "VS Code installed"
+else
+  ok "VS Code already installed"
+fi
+
+# ---------------------------------------------------------------------------
 # Nerd Font (ghostty/config requests "MesloLGS Nerd Font Mono")
 # ---------------------------------------------------------------------------
 
@@ -304,6 +325,42 @@ for entry in "$DOTFILES_DIR"/*; do
 done
 
 # ---------------------------------------------------------------------------
+# VS Code: symlink settings/keybindings from ~/.config/vscode (the dotfiles
+# copy, just linked above) into the location VS Code actually reads on
+# Linux, then install the extensions that config expects.
+# ---------------------------------------------------------------------------
+
+log "Linking VS Code settings"
+VSCODE_USER_DIR="$HOME/.config/Code/User"
+mkdir -p "$VSCODE_USER_DIR"
+for f in settings.json keybindings.json; do
+  target="$VSCODE_USER_DIR/$f"
+  if [[ -e "$target" && ! -L "$target" ]]; then
+    mv "$target" "${target}.bak.$(date +%s)"
+    warn "backed up existing $target"
+  fi
+  ln -sfn "$HOME/.config/vscode/$f" "$target"
+  ok "linked $target"
+done
+
+if have code; then
+  log "Installing VS Code extensions"
+  for ext in \
+    vscodevim.vim jdinhlife.gruvbox llvm-vs-code-extensions.vscode-clangd \
+    eamodio.gitlens esbenp.prettier-vscode dbaeumer.vscode-eslint \
+    ms-python.python ms-python.vscode-pylance \
+    vscode-icons-team.vscode-icons streetsidesoftware.code-spell-checker; do
+    if code --install-extension "$ext" --force >/dev/null; then
+      ok "extension: $ext"
+    else
+      warn "failed to install extension: $ext"
+    fi
+  done
+else
+  warn "code CLI not found, skipping extension install"
+fi
+
+# ---------------------------------------------------------------------------
 # zsh: ZDOTDIR, default shell, required dirs
 # ---------------------------------------------------------------------------
 
@@ -343,4 +400,5 @@ echo "Next steps:"
 echo "  - Log out / back in (or reboot) to pick up the zsh shell + ZDOTDIR change"
 echo "  - Launch Ghostty and set MesloLGS Nerd Font Mono as its font if not picked up automatically"
 echo "  - Open nvim once to let it fetch plugins via vim.pack, then run :Mason to install LSP servers"
+echo "  - Open VS Code and reload the window so the Gruvbox theme takes effect"
 echo "  - Config source lives in $DOTFILES_DIR, symlinked into ~/.config"

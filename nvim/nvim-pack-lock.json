@@ -56,6 +56,10 @@
     "rustaceanvim": {
       "rev": "f74b899ba3e5ab71808c875a95c502555baf7530",
       "src": "https://github.com/mrcjkb/rustaceanvim"
+    },
+    "vim-tmux-navigator": {
+      "rev": "e41c431a0c7b7388ae7ba341f01a0d217eb3a432",
+      "src": "https://github.com/christoomey/vim-tmux-navigator"
     }
   }
 }
