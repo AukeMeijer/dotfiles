@@ -1,0 +1,719 @@
+{
+    // Theme & Font (matching Neovim gruvbox.nvim, default/medium contrast, and terminal font)
+    "workbench.colorTheme": "Gruvbox Dark Medium",
+    "editor.fontFamily": "MesloLGS Nerd Font Mono",
+    "terminal.integrated.fontFamily": "MesloLGS Nerd Font Mono",
+    "editor.fontSize": 16,
+    "workbench.colorCustomizations": {
+        "editor.background": "#282828",
+        "editorGutter.background": "#282828",
+        "terminal.background": "#282828",
+        "sideBar.background": "#282828",
+        "sideBarSectionHeader.background": "#282828",
+        "panel.background": "#282828",
+        "panelSection.background": "#282828",
+        "panelSectionHeader.background": "#282828",
+        "editorGroupHeader.tabsBackground": "#282828",
+        "tab.inactiveBackground": "#282828",
+        "tab.activeBackground": "#282828",
+        "activityBar.background": "#282828",
+        "statusBar.background": "#282828",
+        "statusBar.noFolderBackground": "#282828",
+        "statusBar.debuggingBackground": "#282828",
+        "titleBar.activeBackground": "#282828",
+        "titleBar.inactiveBackground": "#282828",
+        "breadcrumb.background": "#282828",
+        "menu.background": "#282828",
+        "editorWidget.background": "#282828",
+        "input.background": "#282828",
+        "dropdown.background": "#282828",
+        "quickInput.background": "#282828",
+        "notification.background": "#282828",
+        "notificationCenterHeader.background": "#282828",
+        "notifications.background": "#282828",
+        "editorHoverWidget.background": "#282828",
+        "editorSuggestWidget.background": "#282828",
+        "peekViewEditor.background": "#282828",
+        "peekViewResult.background": "#282828",
+        "peekViewTitle.background": "#282828",
+        "debugToolBar.background": "#282828",
+        "editorGroup.border": "#3c3836",
+        "sideBar.border": "#3c3836",
+        "panel.border": "#3c3836",
+        "statusBar.border": "#3c3836",
+        "activityBar.border": "#3c3836",
+        "titleBar.border": "#3c3836"
+    },
+    // Semantic token colors (matching the gruvbox palette used by gruvbox.nvim)
+    "editor.semanticTokenColorCustomizations": {
+        "enabled": true,
+        "rules": {
+            // Classes, Structs, and Types
+            "class": "#fabd2f",
+            "struct": "#fabd2f",
+            "type": "#fabd2f",
+            "typeParameter": "#d79921",
+            // Interfaces and Enums
+            "interface": "#8ec07c",
+            "enum": "#fabd2f",
+            "enumMember": "#8ec07c",
+            // Functions and Methods
+            "function": "#83a598",
+            "method": "#83a598",
+            "macro": "#fe8019",
+            // Properties, Variables, and Parameters
+            "property": "#8ec07c",
+            "variable": "#ebdbb2",
+            "parameter": "#ebdbb2",
+            // Namespaces and Events
+            "namespace": "#d3869b",
+            "event": "#fe8019",
+            // Keywords and Modifiers
+            "keyword": "#fb4934",
+            "modifier": "#fb4934",
+            // Comments, Strings, Numbers, Operators
+            "comment": {
+                "foreground": "#928374",
+                "italic": true
+            },
+            "string": "#b8bb26",
+            "number": "#fe8019",
+            "operator": "#8ec07c",
+            "regexp": "#fe8019",
+            "decorator": "#d3869b",
+            // Modifiers with styling
+            "*.static": {
+                "bold": true
+            },
+            "*.readonly": {
+                "italic": true
+            },
+            "*.deprecated": {
+                "foreground": "#928374",
+                "strikethrough": true
+            },
+            "*.abstract": {
+                "italic": true
+            },
+            "*.async": {
+                "italic": true
+            },
+            // Type+Modifier combinations
+            "method.static": {
+                "foreground": "#83a598",
+                "bold": true
+            },
+            "property.static": {
+                "foreground": "#8ec07c",
+                "bold": true
+            },
+            "type.defaultLibrary": "#d3869b",
+            "class.defaultLibrary": "#d3869b",
+            "method.defaultLibrary": "#d3869b"
+        }
+    },
+    // Line numbers (matching: vim.opt.relativenumber = true)
+    "editor.lineNumbers": "relative",
+    // Cursor & scrolling (matching: vim.opt.cursorline, vim.opt.scrolloff = 15)
+    "editor.cursorSurroundingLines": 15,
+    "editor.cursorBlinking": "solid",
+    "editor.cursorStyle": "block",
+    "editor.renderLineHighlight": "all",
+    // Search (matching: vim.opt.ignorecase, vim.opt.smartcase)
+    "editor.find.autoFindInSelection": "never",
+    "search.smartCase": true,
+    // Splits (matching: vim.opt.splitright, vim.opt.splitbelow)
+    "workbench.editor.openSideBySideDirection": "right",
+    // Whitespace (matching: vim.opt.list with listchars)
+    "editor.renderWhitespace": "boundary",
+    "editor.renderControlCharacters": true,
+    // Word boundaries (matching: vim.opt.iskeyword:append("-") so hyphenated words move as one)
+    "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?",
+    // Indentation (matching: vim.opt.tabstop/shiftwidth/softtabstop = 2, expandtab = true)
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": true,
+    // Misc editor settings
+    "editor.minimap.enabled": false,
+    "editor.scrollBeyondLastLine": false,
+    "editor.wordWrap": "off",
+    "editor.formatOnSave": true,
+    "editor.linkedEditing": true,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": true,
+    "editor.inlayHints.enabled": "off",
+    // File explorer
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    // Terminal
+    "terminal.integrated.scrollback": 10000,
+    // Vim extension settings
+    "vim.leader": "<space>",
+    "vim.hlsearch": true,
+    "vim.incsearch": true,
+    "vim.ignorecase": true,
+    "vim.smartcase": true,
+    "vim.useSystemClipboard": true,
+    "vim.highlightedyank.enable": true,
+    "vim.highlightedyank.duration": 200,
+    // matching: vim.opt.timeoutlen = 500
+    "vim.timeout": 500,
+    "vim.sneak": false,
+    "vim.surround": true,
+    "vim.easymotion": false,
+    "vim.useCtrlKeys": true,
+    "vim.handleKeys": {
+        "<C-a>": false,
+        "<C-f>": false,
+        "<C-c>": false,
+        "<C-v>": false,
+        "<C-x>": false,
+        "<C-z>": false,
+        "<C-y>": false,
+        "<C-n>": false,
+        "<C-p>": false,
+        "<C-e>": false
+    },
+    // Not present in the Neovim config (no such autocmd there), kept as a VS Code-only convenience
+    "vim.insertModeKeyBindings": [
+        {
+            "before": [
+                "j",
+                "k"
+            ],
+            "after": [
+                "<Esc>"
+            ]
+        }
+    ],
+    "vim.normalModeKeyBindingsNonRecursive": [
+        // Clear search highlights (matching: <leader>c -> :nohlsearch<CR>)
+        {
+            "before": [
+                "<leader>",
+                "c"
+            ],
+            "commands": [
+                ":nohlsearch"
+            ]
+        },
+        // Centered search / scroll (matching: n/N -> nzzzv/Nzzzv, <C-d>/<C-u> -> ...zz)
+        {
+            "before": [
+                "n"
+            ],
+            "after": [
+                "n",
+                "z",
+                "z",
+                "z",
+                "v"
+            ]
+        },
+        {
+            "before": [
+                "N"
+            ],
+            "after": [
+                "N",
+                "z",
+                "z",
+                "z",
+                "v"
+            ]
+        },
+        {
+            "before": [
+                "<C-d>"
+            ],
+            "after": [
+                "<C-d>",
+                "z",
+                "z"
+            ]
+        },
+        {
+            "before": [
+                "<C-u>"
+            ],
+            "after": [
+                "<C-u>",
+                "z",
+                "z"
+            ]
+        },
+        // Join lines, keep cursor position (matching: J -> mzJ`z)
+        {
+            "before": [
+                "J"
+            ],
+            "after": [
+                "m",
+                "z",
+                "J",
+                "`",
+                "z"
+            ]
+        },
+        // Delete without yanking (matching: <leader>x -> "_d)
+        {
+            "before": [
+                "<leader>",
+                "x"
+            ],
+            "after": [
+                "\"",
+                "_",
+                "d"
+            ]
+        },
+        // Buffers (matching: <leader>bn/<leader>bp)
+        {
+            "before": [
+                "<leader>",
+                "b",
+                "n"
+            ],
+            "commands": [
+                "workbench.action.nextEditor"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "b",
+                "p"
+            ],
+            "commands": [
+                "workbench.action.previousEditor"
+            ]
+        },
+        // File tree toggle (matching: <leader>e -> nvim-tree toggle)
+        {
+            "before": [
+                "<leader>",
+                "e"
+            ],
+            "commands": [
+                "workbench.action.toggleSidebarVisibility"
+            ]
+        },
+        // Copy full file path (matching: <leader>pa)
+        {
+            "before": [
+                "<leader>",
+                "p",
+                "a"
+            ],
+            "commands": [
+                "copyFilePath"
+            ]
+        },
+        // fzf-lua (matching: <leader>ff/fg/fb/fh/fx/fX)
+        {
+            "before": [
+                "<leader>",
+                "f",
+                "f"
+            ],
+            "commands": [
+                "workbench.action.quickOpen"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "f",
+                "g"
+            ],
+            "commands": [
+                "workbench.action.findInFiles"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "f",
+                "b"
+            ],
+            "commands": [
+                "workbench.action.showAllEditors"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "f",
+                "h"
+            ],
+            "commands": [
+                "workbench.action.showCommands"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "f",
+                "x"
+            ],
+            "commands": [
+                "workbench.actions.view.problems"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "f",
+                "X"
+            ],
+            "commands": [
+                "workbench.actions.view.problems"
+            ]
+        },
+        // LSP navigation (matching: <leader>gd/<leader>gD/<leader>gS)
+        {
+            "before": [
+                "<leader>",
+                "g",
+                "d"
+            ],
+            "commands": [
+                "editor.action.revealDefinition"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "g",
+                "D"
+            ],
+            "commands": [
+                "editor.action.peekDefinition"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "g",
+                "S"
+            ],
+            "commands": [
+                "editor.action.revealDefinitionAside"
+            ]
+        },
+        // LSP actions (matching: <leader>ca, <leader>rn, <leader>oi)
+        {
+            "before": [
+                "<leader>",
+                "c",
+                "a"
+            ],
+            "commands": [
+                "editor.action.quickFix"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "r",
+                "n"
+            ],
+            "commands": [
+                "editor.action.rename"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "o",
+                "i"
+            ],
+            "commands": [
+                "editor.action.organizeImports"
+            ]
+        },
+        // Hover (matching: K -> vim.lsp.buf.hover)
+        {
+            "before": [
+                "K"
+            ],
+            "commands": [
+                "editor.action.showHover"
+            ]
+        },
+        // Diagnostics (matching: <leader>d/<leader>D, <leader>nd/<leader>pd, <leader>q)
+        {
+            "before": [
+                "<leader>",
+                "d"
+            ],
+            "commands": [
+                "editor.action.showHover"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "D"
+            ],
+            "commands": [
+                "editor.action.showHover"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "n",
+                "d"
+            ],
+            "commands": [
+                "editor.action.marker.next"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "p",
+                "d"
+            ],
+            "commands": [
+                "editor.action.marker.prev"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "q"
+            ],
+            "commands": [
+                "workbench.actions.view.problems"
+            ]
+        },
+        // LSP find (matching: <leader>fr/<leader>ft/<leader>fs/<leader>fw/<leader>fi)
+        {
+            "before": [
+                "<leader>",
+                "f",
+                "r"
+            ],
+            "commands": [
+                "editor.action.goToReferences"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "f",
+                "t"
+            ],
+            "commands": [
+                "editor.action.goToTypeDefinition"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "f",
+                "s"
+            ],
+            "commands": [
+                "workbench.action.gotoSymbol"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "f",
+                "w"
+            ],
+            "commands": [
+                "workbench.action.showAllSymbols"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "f",
+                "i"
+            ],
+            "commands": [
+                "editor.action.goToImplementation"
+            ]
+        },
+        // Git (matching: ]h/[h, <leader>hs/<leader>hp/<leader>hb from mini.diff + mini.git)
+        {
+            "before": [
+                "]",
+                "h"
+            ],
+            "commands": [
+                "editor.action.dirtydiff.next"
+            ]
+        },
+        {
+            "before": [
+                "[",
+                "h"
+            ],
+            "commands": [
+                "editor.action.dirtydiff.previous"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "h",
+                "s"
+            ],
+            "commands": [
+                "git.stageSelectedRanges"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "h",
+                "p"
+            ],
+            "commands": [
+                "git.openChange"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "h",
+                "b"
+            ],
+            "commands": [
+                "gitlens.toggleLineBlame"
+            ]
+        },
+        // Splits (matching: <leader>sv -> vsplit, <leader>sh -> split)
+        {
+            "before": [
+                "<leader>",
+                "s",
+                "v"
+            ],
+            "commands": [
+                "workbench.action.splitEditor"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "s",
+                "h"
+            ],
+            "commands": [
+                "workbench.action.splitEditorDown"
+            ]
+        },
+        // Terminal (matching: <leader>tt -> toggle floating terminal)
+        {
+            "before": [
+                "<leader>",
+                "t",
+                "t"
+            ],
+            "commands": [
+                "workbench.action.terminal.toggleTerminal"
+            ]
+        }
+    ],
+    "vim.visualModeKeyBindingsNonRecursive": [
+        // Delete without yanking (matching: <leader>x -> "_d, normal + visual)
+        {
+            "before": [
+                "<leader>",
+                "x"
+            ],
+            "after": [
+                "\"",
+                "_",
+                "d"
+            ]
+        },
+        // Paste without yanking replaced text (matching: <leader>p -> "_dP)
+        {
+            "before": [
+                "<leader>",
+                "p"
+            ],
+            "after": [
+                "\"",
+                "_",
+                "d",
+                "P"
+            ]
+        },
+        // Indent and reselect (matching: < -> <gv, > -> >gv)
+        {
+            "before": [
+                "<"
+            ],
+            "after": [
+                "<",
+                "g",
+                "v"
+            ]
+        },
+        {
+            "before": [
+                ">"
+            ],
+            "after": [
+                ">",
+                "g",
+                "v"
+            ]
+        },
+        // Stage selected hunk range
+        {
+            "before": [
+                "<leader>",
+                "h",
+                "s"
+            ],
+            "commands": [
+                "git.stageSelectedRanges"
+            ]
+        }
+    ],
+    // Existing settings
+    "liveServer.settings.donotShowInfoMsg": true,
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false,
+        "php": false,
+        "python": false,
+        "c#": false
+    },
+    "php.validate.executablePath": "/usr/local/bin",
+    "phpTools.language": "en",
+    "git.openRepositoryInParentFolders": "never",
+    "keyboard.dispatch": "keyCode",
+    "claudeCode.preferredLocation": "panel",
+    // C/C++ configuration (matching Neovim clangd setup)
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "clangd.path": "clangd",
+    "clangd.arguments": [
+        "--background-index",
+        "--clang-tidy",
+        "--header-insertion=iwyu",
+        "--completion-style=detailed",
+        "--function-arg-placeholders",
+        "--fallback-style=llvm"
+    ],
+    "[c]": {
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
+        "editor.formatOnSave": true
+    },
+    "[cpp]": {
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
+        "editor.formatOnSave": true
+    }
+}

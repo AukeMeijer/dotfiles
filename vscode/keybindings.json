@@ -1,0 +1,212 @@
+[
+    // ==========================================
+    // NEOVIM-INSPIRED KEYBINDINGS FOR VS CODE
+    // Complete sync with Neovim configuration (nvim/init.lua)
+    // ==========================================
+
+    // ===================
+    // COMPLETION (blink.cmp)
+    // ===================
+    // Matching Neovim blink.cmp keymap preset "none" with custom bindings
+
+    // <C-Space> - Show / hide completion menu
+    {
+        "key": "ctrl+space",
+        "command": "editor.action.triggerSuggest",
+        "when": "editorHasCompletionItemProvider && textInputFocus && !editorReadonly && !suggestWidgetVisible"
+    },
+    {
+        "key": "ctrl+space",
+        "command": "hideSuggestWidget",
+        "when": "suggestWidgetVisible"
+    },
+    // <CR> - Accept completion
+    {
+        "key": "enter",
+        "command": "acceptSelectedSuggestion",
+        "when": "suggestWidgetVisible && textInputFocus"
+    },
+    // <C-j> / <C-k> - Select next / previous item
+    {
+        "key": "ctrl+j",
+        "command": "selectNextSuggestion",
+        "when": "suggestWidgetVisible"
+    },
+    {
+        "key": "ctrl+k",
+        "command": "selectPrevSuggestion",
+        "when": "suggestWidgetVisible"
+    },
+    // <Tab> / <S-Tab> snippet forward/backward are VS Code defaults when "inSnippetMode"; no override needed
+
+    // ===================
+    // QUICK OPEN / PALETTE
+    // ===================
+
+    {
+        "key": "ctrl+n",
+        "command": "workbench.action.quickOpenSelectNext",
+        "when": "inQuickOpen"
+    },
+    {
+        "key": "ctrl+p",
+        "command": "workbench.action.quickOpenSelectPrevious",
+        "when": "inQuickOpen"
+    },
+
+    // ===================
+    // WINDOW NAVIGATION
+    // ===================
+    // Matching Neovim <C-h/j/k/l> -> <C-w>h/j/k/l
+
+    {
+        "key": "ctrl+h",
+        "command": "workbench.action.navigateLeft",
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "ctrl+l",
+        "command": "workbench.action.navigateRight",
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "ctrl+k",
+        "command": "workbench.action.navigateUp",
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "ctrl+j",
+        "command": "workbench.action.navigateDown",
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "ctrl+h",
+        "command": "workbench.action.terminal.focusPreviousPane",
+        "when": "terminalFocus"
+    },
+    {
+        "key": "ctrl+l",
+        "command": "workbench.action.terminal.focusNextPane",
+        "when": "terminalFocus"
+    },
+
+    // ===================
+    // MOVE LINES / INDENT (mini.move)
+    // ===================
+    // Matching Neovim mini.move defaults: <M-j>/<M-k> move down/up, <M-h>/<M-l> outdent/indent
+
+    {
+        "key": "alt+j",
+        "command": "editor.action.moveLinesDownAction",
+        "when": "editorTextFocus && vim.mode == 'Normal'"
+    },
+    {
+        "key": "alt+k",
+        "command": "editor.action.moveLinesUpAction",
+        "when": "editorTextFocus && vim.mode == 'Normal'"
+    },
+    {
+        "key": "alt+j",
+        "command": "editor.action.moveLinesDownAction",
+        "when": "editorTextFocus && vim.mode == 'Visual'"
+    },
+    {
+        "key": "alt+k",
+        "command": "editor.action.moveLinesUpAction",
+        "when": "editorTextFocus && vim.mode == 'Visual'"
+    },
+    {
+        "key": "alt+h",
+        "command": "editor.action.outdentLines",
+        "when": "editorTextFocus && vim.mode == 'Normal'"
+    },
+    {
+        "key": "alt+l",
+        "command": "editor.action.indentLines",
+        "when": "editorTextFocus && vim.mode == 'Normal'"
+    },
+    {
+        "key": "alt+h",
+        "command": "editor.action.outdentLines",
+        "when": "editorTextFocus && vim.mode == 'Visual'"
+    },
+    {
+        "key": "alt+l",
+        "command": "editor.action.indentLines",
+        "when": "editorTextFocus && vim.mode == 'Visual'"
+    },
+    // Alt+Up/Down fallback when the Vim extension is off
+    {
+        "key": "alt+down",
+        "command": "editor.action.moveLinesDownAction",
+        "when": "editorTextFocus && !suggestWidgetVisible"
+    },
+    {
+        "key": "alt+up",
+        "command": "editor.action.moveLinesUpAction",
+        "when": "editorTextFocus && !suggestWidgetVisible"
+    },
+
+    // ===================
+    // WINDOW RESIZE
+    // ===================
+    // Matching Neovim <C-Up>/<C-Down>/<C-Left>/<C-Right> -> :resize +-2 / vertical resize +-2
+    // Note: macOS Mission Control also binds Ctrl+Arrow by default (space switching).
+    // Disable that in System Settings > Keyboard > Shortcuts if these don't fire.
+
+    {
+        "key": "ctrl+up",
+        "command": "workbench.action.increaseViewHeight"
+    },
+    {
+        "key": "ctrl+down",
+        "command": "workbench.action.decreaseViewHeight"
+    },
+    {
+        "key": "ctrl+left",
+        "command": "workbench.action.decreaseViewWidth"
+    },
+    {
+        "key": "ctrl+right",
+        "command": "workbench.action.increaseViewWidth"
+    },
+
+    // ===================
+    // TERMINAL
+    // ===================
+    // Matching Neovim floating terminal <C-q> close
+
+    {
+        "key": "ctrl+q",
+        "command": "workbench.action.terminal.kill",
+        "when": "terminalFocus"
+    },
+
+    // ===================
+    // VS CODE-ONLY CONVENIENCES
+    // ===================
+    // Not derived from the Neovim config, kept for general editor usability
+
+    {
+        "key": "ctrl+s",
+        "command": "workbench.action.files.save",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "alt+a",
+        "command": "editor.action.selectAll",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "cmd+\\",
+        "command": "workbench.action.splitEditor"
+    },
+    {
+        "key": "cmd+-",
+        "command": "workbench.action.splitEditorDown"
+    },
+    {
+        "key": "ctrl+\\",
+        "command": "workbench.action.terminal.toggleTerminal"
+    }
+]
