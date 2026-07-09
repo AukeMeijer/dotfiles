@@ -266,6 +266,11 @@ vim.pack.add({
 	"https://github.com/obsidian-nvim/obsidian.nvim",
 	"https://github.com/mrcjkb/rustaceanvim",
 	"https://github.com/ellisonleao/gruvbox.nvim",
+
+	-- Debugging
+	"https://github.com/mfussenegger/nvim-dap",
+	"https://github.com/rcarriga/nvim-dap-ui",
+	"https://github.com/nvim-neotest/nvim-nio",
 })
 
 -- ============================================================================
@@ -764,6 +769,81 @@ vim.lsp.enable({
 	"clangd",
 	"efm",
 })
+
+-- ============================================================================
+-- DEBUGGING (nvim-dap) — C / C++ via codelldb
+-- ============================================================================
+local function ensure_codelldb()
+	local ok, registry = pcall(require, "mason-registry")
+	if not ok then
+		return
+	end
+	registry.refresh(function()
+		local pkg = registry.get_package("codelldb")
+		if not pkg:is_installed() then
+			pkg:install()
+		end
+	end)
+end
+ensure_codelldb()
+
+local dap = require("dap")
+local dapui = require("dapui")
+
+local codelldb_path = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/adapter/codelldb"
+
+dap.adapters.codelldb = {
+	type = "server",
+	port = "${port}",
+	executable = {
+		command = codelldb_path,
+		args = { "--port", "${port}" },
+	},
+}
+
+dap.configurations.c = {
+	{
+		name = "Launch",
+		type = "codelldb",
+		request = "launch",
+		program = function()
+			return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+		end,
+		cwd = "${workspaceFolder}",
+		stopOnEntry = false,
+	},
+}
+dap.configurations.cpp = dap.configurations.c
+
+dapui.setup({})
+
+dap.listeners.after.event_initialized["dapui_config"] = function()
+	dapui.open()
+end
+dap.listeners.before.event_terminated["dapui_config"] = function()
+	dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+	dapui.close()
+end
+
+vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "DiagnosticError" })
+vim.fn.sign_define("DapBreakpointCondition", { text = "●", texthl = "DiagnosticWarn" })
+vim.fn.sign_define("DapStopped", { text = "▶", texthl = "DiagnosticInfo", linehl = "DapStoppedLine" })
+vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#3c3836" })
+
+vim.keymap.set("n", "<F5>", dap.continue, { desc = "Debug: Continue/Start" })
+vim.keymap.set("n", "<F9>", dap.toggle_breakpoint, { desc = "Debug: Toggle breakpoint" })
+vim.keymap.set("n", "<F10>", dap.step_over, { desc = "Debug: Step over" })
+vim.keymap.set("n", "<F11>", dap.step_into, { desc = "Debug: Step into" })
+vim.keymap.set("n", "<F12>", dap.step_out, { desc = "Debug: Step out" })
+vim.keymap.set("n", "<leader>kb", function()
+	dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+end, { desc = "Debug: Conditional breakpoint" })
+vim.keymap.set("n", "<leader>kr", dap.repl.toggle, { desc = "Debug: Toggle REPL" })
+vim.keymap.set("n", "<leader>ku", dapui.toggle, { desc = "Debug: Toggle UI" })
+vim.keymap.set("n", "<leader>kx", dap.terminate, { desc = "Debug: Terminate" })
+vim.keymap.set("n", "<leader>kl", dap.run_last, { desc = "Debug: Run last" })
 
 -- ============================================================================
 -- FLOATING TERMINAL

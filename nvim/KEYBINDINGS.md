@@ -102,6 +102,21 @@ Leader key: `<Space>`
 | `<leader>q` | n | Open diagnostic list (loclist) |
 | `<leader>td` | n | Toggle diagnostics on/off |
 
+## Debugging (nvim-dap, C/C++)
+
+| Key | Mode | Action |
+|-----|------|--------|
+| `<F5>` | n | Continue / start debugging |
+| `<F9>` | n | Toggle breakpoint |
+| `<F10>` | n | Step over |
+| `<F11>` | n | Step into |
+| `<F12>` | n | Step out |
+| `<leader>kb` | n | Set conditional breakpoint |
+| `<leader>kr` | n | Toggle REPL |
+| `<leader>ku` | n | Toggle debug UI |
+| `<leader>kx` | n | Terminate debug session |
+| `<leader>kl` | n | Run last debug configuration |
+
 ## Git (mini.diff + mini.git)
 
 | Key | Mode | Action |

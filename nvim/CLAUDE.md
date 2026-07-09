@@ -45,6 +45,10 @@ Formatters/linters per language:
 
 `blink.cmp` handles completion with LuaSnip for snippet expansion. Completion is disabled for markdown buffers. Keymap preset is `none` — custom bindings: `<C-Space>` show/hide, `<CR>` accept, `<C-j>/<C-k>` navigate, `<Tab>/<S-Tab>` snippet forward/backward.
 
+## Debugging (nvim-dap)
+
+C/C++ debugging uses `nvim-dap` + `nvim-dap-ui` (+ `nvim-nio` as a dapui dependency) with `codelldb` as the adapter. `codelldb` is auto-installed via `mason-registry` on startup (no manual `:MasonInstall` needed) and resolved from `stdpath("data") .. "/mason/packages/codelldb/extension/adapter/codelldb"`. Adapter/configurations are registered for both `c` and `cpp` filetypes (`cpp` reuses the `c` config table).
+
 ## Mini.nvim modules in use
 
 `mini.ai`, `mini.comment`, `mini.move`, `mini.surround`, `mini.cursorword`, `mini.indentscope`, `mini.pairs`, `mini.trailspace`, `mini.bufremove`, `mini.notify`, `mini.icons`, `mini.diff` (git signs + hunk navigation), `mini.git` (blame/show).
@@ -75,6 +79,8 @@ A custom floating terminal (80%×80% of the editor) is toggled with `<leader>t`.
 | `<leader>nn/nf/ns/nt/nw` | Obsidian: new note / find / search / today / workspace |
 | `<leader>bn / <leader>bp` | Next / prev buffer |
 | `<leader>sv / <leader>sh` | Split window vertically / horizontally |
+| `<F5>/<F9>/<F10>/<F11>/<F12>` | Debug: continue-start / toggle breakpoint / step over / step into / step out |
+| `<leader>kb/kr/ku/kx/kl` | Debug: conditional breakpoint / toggle REPL / toggle UI / terminate / run last |
 | `<leader>pa` | Copy full file path to clipboard |
 | `<leader>c` | Clear search highlights |
 | `<leader>x` | Delete without yanking (normal + visual) |

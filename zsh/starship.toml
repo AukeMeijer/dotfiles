@@ -1,345 +1,236 @@
-"$schema" = 'https://starship.rs/config-schema.json'
+format = """
+$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+$git_metrics\
+$fill\
+$php\
+$python\
+$lua\
+$nodejs\
+$golang\
+$haskell\
+$rust\
+$ruby\
+$package\
+$kubernetes\
+$aws\
+$docker_context\
+$memory_usage\
+$jobs\
+$cmd_duration\
+$time\
+$line_break\
+$character"""
 
-# ~/.config/starship.toml
-
-# A minimal left prompt
-format = """$directory$character"""
-
-# move the rest of the prompt to the right
-right_format = """$all"""
-
-palette = 'gruvbox_dark'
-
-[palettes.gruvbox_dark]
-color_fg0    = '#fbf1c7'
-color_bg1    = '#3c3836'
-color_bg3    = '#665c54'
-color_blue   = '#458588'
-color_aqua   = '#689d6a'
-color_green  = '#98971a'
-color_orange = '#d65d0e'
-color_purple = '#b16286'
-color_red1   = '#cc241d'
-color_red2   = '#fb4934'
-color_yellow = '#d79921'
-color_gray   = '#a89984'
-
-[aws]
-symbol = " "
-
-[azure]
-symbol = " "
-
-[battery]
-full_symbol = "󰁹 "
-charging_symbol = "󰂄 "
-discharging_symbol = "󰂃 "
-unknown_symbol = "󰂑 "
-empty_symbol = "󰂎 "
-
-[buf]
-symbol = " "
-
-[bun]
-symbol = " "
-
-[c]
-symbol = " "
-
-[cpp]
-symbol = " "
-
-[cmake]
-symbol = " "
-
-[cobol]
-symbol = " "
-
-[conda]
-symbol = " "
-
-[container]
-symbol = " "
-
-[crystal]
-symbol = " "
-
-[dart]
-symbol = " "
-
-[deno]
-symbol = " "
-
-[direnv]
-symbol = " "
-
-[character]
-success_symbol = '[❯](bold fg:color_green)'
-error_symbol   = '[❯](bold fg:color_red1)'
+add_newline     = false
+palette         = 'gruvbox'
+command_timeout = 500
+scan_timeout    = 10
 
 [directory]
-read_only = " 󰌾"
-style = 'bold fg:color_yellow'
+style             = 'bold fg:blue bg:cursorline'
+format            = '[$path ]($style)'
+truncation_length = 4
+truncation_symbol = '…/'
+truncate_to_repo  = false
+read_only         = ' 󰌾'
+read_only_style   = 'fg:red bg:cursorline'
 
-[docker_context]
-symbol = " "
-
-[dotnet]
-symbol = " "
-
-[elixir]
-symbol = " "
-
-[elm]
-symbol = " "
-
-[erlang]
-symbol = " "
-
-[fennel]
-symbol = " "
-
-[fortran]
-symbol = " "
-
-[fossil_branch]
-symbol = " "
-
-[gcloud]
-symbol = "󱇶 "
-
-[gleam]
-symbol = " "
+[directory.substitutions]
+'Documents' = '󰈙 '
+'Downloads' = ' '
+'Music'     = ' '
+'Pictures'  = ' '
 
 [git_branch]
-symbol = " "
-style  = 'bold fg:color_aqua'
+style  = 'fg:green bg:cursorline'
+symbol = ' '
+format = '[on](white bg:cursorline)[$symbol$branch ]($style)'
 
 [git_commit]
-tag_symbol = '  '
-style      = 'bold fg:color_aqua'
+commit_hash_length = 7
+style              = 'fg:purple bg:cursorline'
+format             = '[(\($hash$tag\) )]($style)'
+only_detached      = true
+tag_disabled       = false
+tag_symbol         = ' 🏷 '
+
+[git_state]
+style        = 'fg:yellow bg:cursorline'
+format       = '[\($state( $progress_current of $progress_total)\) ]($style)'
+rebase       = 'REBASING'
+merge        = 'MERGING'
+revert       = 'REVERTING'
+cherry_pick  = 'CHERRY-PICKING'
+bisect       = 'BISECTING'
+am           = 'AM'
+am_or_rebase = 'AM/REBASE'
 
 [git_status]
-style = 'bold fg:color_red2'
+style      = 'fg:green bg:cursorline'
+format     = '([$all_status$ahead_behind ]($style))'
+conflicted = '🏳'
+ahead      = '⇡${count}'
+behind     = '⇣${count}'
+diverged   = '⇕⇡${ahead_count}⇣${behind_count}'
+untracked  = '?${count}'
+stashed    = '📦'
+modified   = '!${count}'
+staged     = '+${count}'
+renamed    = '»${count}'
+deleted    = '✘${count}'
 
-[cmd_duration]
-style = 'fg:color_gray'
-
-[golang]
-symbol = " "
-
-[gradle]
-symbol = " "
-
-[guix_shell]
-symbol = " "
-
-[haskell]
-symbol = " "
-
-[haxe]
-symbol = " "
-
-[helm]
-symbol = " "
-
-[hg_branch]
-symbol = " "
-
-[hostname]
-ssh_symbol = " "
-
-[java]
-symbol = " "
-
-[julia]
-symbol = " "
-
-[kotlin]
-symbol = " "
-
-[kubernetes]
-symbol = "󱃾 "
-
-[lua]
-symbol = " "
-
-[maven]
-symbol = " "
-
-[memory_usage]
-symbol = "󰍛 "
-
-[meson]
-symbol = "󰔷 "
-
-[mojo]
-symbol = "󰈸 "
-
-[nats]
-symbol = " "
-
-[netns]
-symbol = "󰛳 "
-
-[nim]
-symbol = " "
-
-[nix_shell]
-symbol = " "
-
-[nodejs]
-symbol = " "
-
-[ocaml]
-symbol = " "
-
-[odin]
-symbol = "󰟢 "
-
-[opa]
-symbol = " "
-
-[openstack]
-symbol = " "
-
-[os.symbols]
-AIX = " "
-AlmaLinux = " "
-Alpaquita = " "
-Alpine = " "
-ALTLinux = " "
-Amazon = " "
-Android = " "
-AOSC = " "
-Arch = " "
-Artix = " "
-Bluefin = " "
-CachyOS = " "
-CentOS = " "
-Debian = " "
-DragonFly = " "
-Elementary = " "
-Emscripten = " "
-EndeavourOS = " "
-Fedora = " "
-FreeBSD = " "
-Garuda = " "
-Gentoo = " "
-HardenedBSD = "󰞌 "
-Illumos = " "
-InstantOS = " "
-Ios = "󰀷 "
-Kali = " "
-Linux = " "
-Mabox = " "
-Macos = " "
-Manjaro = " "
-Mariner = " "
-MidnightBSD = " "
-Mint = " "
-NetBSD = " "
-NixOS = " "
-Nobara = " "
-OpenBSD = " "
-OpenCloudOS = " "
-openEuler = " "
-openSUSE = " "
-OracleLinux = "󰺡 "
-PikaOS = " "
-Pop = " "
-Raspbian = " "
-Redhat = "󱄛 "
-RedHatEnterprise = "󱄛 "
-Redox = "󰀘 "
-RockyLinux = " "
-Solus = " "
-SUSE = " "
-Ubuntu = " "
-Ultramarine = " "
-Unknown = " "
-Uos = " "
-Void = " "
-Windows = "󰍲 "
-Zorin = " "
-
-[package]
-symbol = "󰏗 "
-
-[perl]
-symbol = " "
+[fill]
+symbol = '█'
+style = 'fg:cursorline'
 
 [php]
-symbol = " "
-
-[pijul_channel]
-symbol = " "
-
-[pixi]
-symbol = "󰏗 "
-
-[pulumi]
-symbol = " "
-
-[purescript]
-symbol = " "
+style    = 'blue bg:cursorline'
+symbol   = ' '
+format   = '[$symbol($version )]($style)'
+disabled = false
 
 [python]
-symbol = " "
+style              = 'teal bg:cursorline'
+symbol             = ' '
+format             = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+pyenv_version_name = true
+pyenv_prefix       = ''
+disabled           = false
 
-[raku]
-symbol = "󱖊 "
+[lua]
+style    = 'blue bg:cursorline'
+symbol   = ' '
+format   = '[$symbol($version )]($style)'
+disabled = false
 
-[red]
-symbol = "󱍼 "
+[nodejs]
+style    = 'blue bg:cursorline'
+symbol   = ' '
+format   = '[$symbol($version )]($style)'
+disabled = false
 
-[rlang]
-symbol = "󰟔 "
+[golang]
+style    = 'blue bg:cursorline'
+symbol   = ' '
+format   = '[$symbol($version )]($style)'
+disabled = false
 
-[ruby]
-symbol = " "
+[haskell]
+style    = 'blue bg:cursorline'
+symbol   = ' '
+format   = '[$symbol($version )]($style)'
+disabled = false
 
 [rust]
-symbol = "󱘗 "
+style    = 'orange bg:cursorline'
+symbol   = ' '
+format   = '[$symbol($version )]($style)'
+disabled = false
 
-[scala]
-symbol = " "
+[ruby]
+style    = 'blue bg:cursorline'
+symbol   = ' '
+format   = '[$symbol($version )]($style)'
+disabled = false
 
-[shlvl]
-symbol = "󰹍 "
+[package]
+style  = 'bg:cursorline'
+symbol = '󰏗 '
+format = '[$symbol$version ]($style)'
 
-[singularity]
-symbol = " "
+[aws]
+symbol = ' '
+style  = 'yellow bg:cursorline'
+format = '[$symbol($profile )(\[$duration\] )]($style)'
 
-[solidity]
-symbol = " "
+[docker_context]
+symbol            = ' '
+style             = 'fg:teal bg:cursorline'
+format            = '[$symbol$context ]($style)'
+only_with_files   = true
+detect_files      = ['docker-compose.yml', 'docker-compose.yaml', 'Dockerfile']
+detect_extensions = []
 
-[spack]
-symbol = " "
+[jobs]
+symbol           = ' '
+style            = 'red bg:cursorline'
+number_threshold = 1
+format           = '[$symbol]($style)'
 
-[status]
-symbol = " "
+[cmd_duration]
+min_time          = 5
+show_milliseconds = true
+style             = 'fg:teal bg:cursorline'
+format            = '[$duration ]($style)'
 
-[sudo]
-symbol = " "
+[git_metrics]
+added_style   = 'fg:green bg:cursorline'
+deleted_style = 'fg:red bg:cursorline'
+format        = '([+$added ]($added_style))([-$deleted ]($deleted_style))'
+disabled      = false
 
-[swift]
-symbol = " "
+[kubernetes]
+symbol       = '☸ '
+style        = 'fg:blue bg:cursorline'
+format       = '[$symbol$context( \($namespace\)) ]($style)'
+disabled     = false
+detect_files = ['k8s', 'Dockerfile', 'docker-compose.yml']
 
-[terraform]
-symbol = " "
+[memory_usage]
+symbol    = '󰍛 '
+style     = 'fg:yellow bg:cursorline'
+format    = '[$symbol$ram ]($style)'
+threshold = 75
+disabled  = false
 
-[vlang]
-symbol = " "
+[time]
+style       = 'fg:gray bg:cursorline'
+format      = '[$time ]($style)'
+time_format = '%T'
+disabled    = true
 
-[typst]
-symbol = " "
+[battery]
+full_symbol        = '󰁹 '
+charging_symbol    = '󰂄 '
+discharging_symbol = '󰂃 '
+unknown_symbol     = '󰁽 '
+empty_symbol       = '󰂎 '
+format             = '[$symbol$percentage ]($style)'
 
-[vagrant]
-symbol = " "
+[[battery.display]]
+threshold = 10
+style     = 'bold red bg:cursorline'
 
-[xmake]
-symbol = " "
+[[battery.display]]
+threshold = 30
+style     = 'bold yellow bg:cursorline'
 
-[zig]
-symbol = " "
+[[battery.display]]
+threshold = 100
+style     = 'bold green bg:cursorline'
+
+[character]
+success_symbol            = '[>](bold green bg:cursorline)'
+error_symbol              = '[✗](bold red bg:cursorline)'
+vimcmd_symbol             = '[<](bold green bg:cursorline)'
+vimcmd_visual_symbol      = '[<](bold yellow bg:cursorline)'
+vimcmd_replace_symbol     = '[<](bold purple bg:cursorline)'
+vimcmd_replace_one_symbol = '[<](bold purple bg:cursorline)'
+
+[palettes.gruvbox]
+cursorline = '#3c3836'
+dark_blue  = '#458588'
+blue       = '#458588'
+teal       = '#689d6a'
+red        = '#fb4934'
+orange     = '#d65d0e'
+green      = '#98971a'
+yellow     = '#d79921'
+purple     = '#b16286'
+gray       = '#a89984'
+black      = '#282828'
+white      = '#fbf1c7'
