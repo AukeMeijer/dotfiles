@@ -116,7 +116,14 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
 
 # transient prompt
-zle-line-init() {
+#
+# Named _transient_prompt_line_init rather than zle-line-init directly:
+# zsh-vi-mode defers its own init to the first precmd and re-registers the
+# zle-line-init widget then. Its wrap-detection only preserves a pre-existing
+# widget if `zle -l -L zle-line-init` reports an explicit function name, which
+# zsh omits when that name matches the widget name - so a widget literally
+# named zle-line-init gets silently overwritten instead of wrapped.
+_transient_prompt_line_init() {
   emulate -L zsh
 
   [[ $CONTEXT == start ]] || return 0
@@ -145,4 +152,4 @@ zle-line-init() {
 
   return ret
 }
-zle -N zle-line-init
+zle -N zle-line-init _transient_prompt_line_init
