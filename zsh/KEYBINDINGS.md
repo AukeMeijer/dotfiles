@@ -21,13 +21,3 @@
 | Key | Action |
 |-----|--------|
 | `Ctrl+\` | Toggle autosuggestions on/off |
-
-## Vi mode
-
-Vi insert/normal/visual mode is provided by `zsh-vi-mode`. The shell starts in insert mode.
-
-| Key | Action |
-|-----|--------|
-| `Esc` | Enter normal mode |
-| `i` | Enter insert mode |
-| `v` | Enter visual mode (in normal mode) |

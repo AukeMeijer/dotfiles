@@ -25,7 +25,6 @@ zplugin-update() {
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#928374'
 _zplugin_load zsh-users zsh-autosuggestions
-_zplugin_load jeffreytse zsh-vi-mode
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=#3c3836,fg=#ebdbb2,bold'
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=#cc241d,fg=#ebdbb2,bold'
 _zplugin_load zsh-users zsh-history-substring-search
