@@ -6,8 +6,11 @@
 #
 # This is NOT the same as install-popos.sh: Ubuntu 26.04's universe repo now
 # ships current-enough versions of eza, gh, zoxide, starship, lazygit, lf,
-# neovim (>=0.11) and ghostty directly, so this script installs all of them
-# via apt instead of third-party repos / GitHub release tarballs / flatpak.
+# and ghostty directly, so this script installs those via apt instead of
+# third-party repos / GitHub release tarballs / flatpak. Neovim is still
+# installed from the latest upstream release tarball (like install-popos.sh
+# does) because apt's package doesn't reliably clear the >=0.12 floor this
+# config's vim.pack usage (nvim/init.lua) needs.
 # Pop!_OS tracks an older/different base and doesn't have all of these
 # backported, which is why that script still builds them manually — if
 # you're on Pop!_OS (or an older/non-LTS Ubuntu) use install-popos.sh instead.
@@ -67,7 +70,7 @@ sudo apt install -y \
   build-essential curl wget git unzip zip file gpg ca-certificates \
   zsh ripgrep fd-find bat htop mpv fontconfig fzf \
   ffmpegthumbnailer poppler-utils p7zip-full jq imagemagick unar \
-  eza gh zoxide starship lazygit lf neovim ghostty
+  eza gh zoxide starship lazygit lf ghostty
 ok "packages installed"
 
 # Ubuntu ships bat/fd under different binary names (batcat/fdfind) to avoid
@@ -76,6 +79,34 @@ ok "packages installed"
 [[ -x /usr/bin/batcat && ! -e "$HOME/.local/bin/bat" ]] && ln -s /usr/bin/batcat "$HOME/.local/bin/bat"
 [[ -x /usr/bin/fdfind && ! -e "$HOME/.local/bin/fd" ]] && ln -s /usr/bin/fdfind "$HOME/.local/bin/fd"
 ok "bat / fd symlinked"
+
+# ---------------------------------------------------------------------------
+# Neovim — apt's version is too old for vim.pack (needs a recent build), so
+# grab the latest official release tarball instead. Falls back to snap on
+# unsupported architectures.
+# ---------------------------------------------------------------------------
+
+if ! have nvim || [[ "$(nvim --version | head -1 | grep -oE '[0-9]+\.[0-9]+' | head -1 | cut -d. -f2)" -lt 12 ]]; then
+  log "Installing latest Neovim"
+  NVIM_ASSET=""
+  case "$UNAME_ARCH" in
+    x86_64)  NVIM_ASSET="nvim-linux-x86_64.tar.gz" ;;
+    aarch64) NVIM_ASSET="nvim-linux-arm64.tar.gz" ;;
+  esac
+  if [[ -n "$NVIM_ASSET" ]] && curl -fsSL -o "$TMP_DIR/nvim.tar.gz" \
+      "https://github.com/neovim/neovim/releases/latest/download/$NVIM_ASSET"; then
+    sudo rm -rf /opt/nvim
+    sudo tar -C /opt -xzf "$TMP_DIR/nvim.tar.gz"
+    sudo mv /opt/nvim-linux-* /opt/nvim
+    sudo ln -sf /opt/nvim/bin/nvim /usr/local/bin/nvim
+    ok "neovim installed to /opt/nvim"
+  else
+    warn "no prebuilt neovim tarball for $UNAME_ARCH, falling back to snap (classic)"
+    sudo snap install nvim --classic
+  fi
+else
+  ok "neovim already installed and recent enough"
+fi
 
 # ---------------------------------------------------------------------------
 # yazi — not in Ubuntu's repos yet, install from the latest GitHub release

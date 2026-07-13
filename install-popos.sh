@@ -129,7 +129,7 @@ fi
 # unsupported architectures.
 # ---------------------------------------------------------------------------
 
-if ! have nvim || [[ "$(nvim --version | head -1 | grep -oE '[0-9]+\.[0-9]+' | head -1 | cut -d. -f2)" -lt 11 ]]; then
+if ! have nvim || [[ "$(nvim --version | head -1 | grep -oE '[0-9]+\.[0-9]+' | head -1 | cut -d. -f2)" -lt 12 ]]; then
   log "Installing latest Neovim"
   NVIM_ASSET=""
   case "$UNAME_ARCH" in

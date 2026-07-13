@@ -3,3 +3,6 @@
 
 # Homebrew trust lock (local state, not config)
 homebrew/trust.json.lock
+
+# zsh plugins, cloned on first shell launch by zsh/plugins.zsh
+zsh/plugins/

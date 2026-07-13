@@ -6,7 +6,8 @@ ZPLUGINDIR="${ZDOTDIR:-$HOME/.config/zsh}/plugins"
 
 _zplugin_load() {
   local plugin_path="${ZPLUGINDIR}/${2}"
-  if [[ ! -d "$plugin_path" ]]; then
+  if [[ ! -d "$plugin_path" || -z "$(ls -A "$plugin_path" 2>/dev/null)" ]]; then
+    rm -rf "$plugin_path"
     mkdir -p "$ZPLUGINDIR"
     echo "Installing ${2}..."
     git clone --depth=1 "https://github.com/${1}/${2}" "$plugin_path" \
