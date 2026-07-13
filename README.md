@@ -1,8 +1,8 @@
 # dotfiles
 
-Personal `~/.config` for macOS and Pop!_OS (Ubuntu-based). Everything here is
-symlinked in from a single clone, all built around a consistent Gruvbox Dark
-theme across the terminal, editor, and shell.
+Personal `~/.config` for macOS, Ubuntu Desktop, and Pop!_OS. Everything here
+is symlinked in from a single clone, all built around a consistent Gruvbox
+Dark theme across the terminal, editor, and shell.
 
 ## Install
 
@@ -10,7 +10,10 @@ theme across the terminal, editor, and shell.
 # macOS
 curl -fsSL https://raw.githubusercontent.com/AukeMeijer/dotfiles/main/install-macos.sh | bash
 
-# Pop!_OS / Ubuntu
+# Ubuntu Desktop 26.04 LTS
+curl -fsSL https://raw.githubusercontent.com/AukeMeijer/dotfiles/main/install-ubuntu.sh | bash
+
+# Pop!_OS (or older/non-LTS Ubuntu)
 curl -fsSL https://raw.githubusercontent.com/AukeMeijer/dotfiles/main/install-popos.sh | bash
 ```
 
@@ -23,8 +26,16 @@ Each script:
 3. Symlinks every top-level directory into `~/.config/`.
 4. Sets `ZDOTDIR` and installs zsh as the default login shell.
 
-Both scripts are idempotent — safe to re-run any time to pick up updates or
-finish a partial install.
+`install-ubuntu.sh` and `install-popos.sh` aren't interchangeable: Ubuntu
+26.04's universe repo carries current-enough versions of eza, gh, zoxide,
+starship, lazygit, lf, neovim (>=0.11), and ghostty, so `install-ubuntu.sh`
+installs all of those straight from apt. Pop!_OS tracks an older/different
+base without those backported, so `install-popos.sh` still builds them from
+third-party repos / GitHub release tarballs / flatpak — use it for Pop!_OS or
+any older/non-LTS Ubuntu.
+
+All three scripts are idempotent — safe to re-run any time to pick up
+updates or finish a partial install.
 
 ## Layout
 

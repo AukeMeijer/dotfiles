@@ -1,11 +1,19 @@
 #!/usr/bin/env bash
 #
-# Bootstrap a fresh Pop!_OS (or Ubuntu-based) machine with the tools this
-# dotfiles repo (https://github.com/AukeMeijer/dotfiles) expects, then
-# symlink every top-level config directory into ~/.config.
+# Bootstrap a fresh Ubuntu Desktop 26.04 LTS ("resolute") machine with the
+# tools this dotfiles repo (https://github.com/AukeMeijer/dotfiles) expects,
+# then symlink every top-level config directory into ~/.config.
+#
+# This is NOT the same as install-popos.sh: Ubuntu 26.04's universe repo now
+# ships current-enough versions of eza, gh, zoxide, starship, lazygit, lf,
+# neovim (>=0.11) and ghostty directly, so this script installs all of them
+# via apt instead of third-party repos / GitHub release tarballs / flatpak.
+# Pop!_OS tracks an older/different base and doesn't have all of these
+# backported, which is why that script still builds them manually — if
+# you're on Pop!_OS (or an older/non-LTS Ubuntu) use install-popos.sh instead.
 #
 # Usage:
-#   ./install-popos.sh
+#   ./install-ubuntu.sh
 #
 # Safe to re-run: every step checks whether its target is already installed
 # / already linked before doing anything.
@@ -48,139 +56,29 @@ gh_latest_tag() { # $1 = owner/repo
 }
 
 # ---------------------------------------------------------------------------
-# Base apt packages
+# Base apt packages — Ubuntu 26.04's universe repo carries current-enough
+# versions of nearly everything this config needs directly, so no PPAs, no
+# vendor install scripts, no manual GitHub release tarballs.
 # ---------------------------------------------------------------------------
 
-log "Updating apt and installing base packages"
+log "Updating apt and installing packages"
 sudo apt update
 sudo apt install -y \
   build-essential curl wget git unzip zip file gpg ca-certificates \
   zsh ripgrep fd-find bat htop mpv fontconfig fzf \
-  ffmpegthumbnailer poppler-utils p7zip-full jq imagemagick unar
-ok "base packages installed"
+  ffmpegthumbnailer poppler-utils p7zip-full jq imagemagick unar \
+  eza gh zoxide starship lazygit lf neovim ghostty
+ok "packages installed"
 
-# Ubuntu/Pop ship bat/fd under different names — symlink to the names our
-# configs (aliases.zsh, fzf.zsh, .zshenv) expect.
+# Ubuntu ships bat/fd under different binary names (batcat/fdfind) to avoid
+# clashing with unrelated packages already using "bat" and "fd" — symlink to
+# the names our configs (aliases.zsh, fzf.zsh, .zshenv) expect.
 [[ -x /usr/bin/batcat && ! -e "$HOME/.local/bin/bat" ]] && ln -s /usr/bin/batcat "$HOME/.local/bin/bat"
 [[ -x /usr/bin/fdfind && ! -e "$HOME/.local/bin/fd" ]] && ln -s /usr/bin/fdfind "$HOME/.local/bin/fd"
 ok "bat / fd symlinked"
 
 # ---------------------------------------------------------------------------
-# eza (not in Ubuntu's default repos — add the official apt repo)
-# ---------------------------------------------------------------------------
-
-if ! have eza; then
-  log "Installing eza"
-  sudo mkdir -p /etc/apt/keyrings
-  wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc \
-    | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
-  echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" \
-    | sudo tee /etc/apt/sources.list.d/gierens.list >/dev/null
-  sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
-  sudo apt update
-  sudo apt install -y eza
-  ok "eza installed"
-else
-  ok "eza already installed"
-fi
-
-# ---------------------------------------------------------------------------
-# GitHub CLI (gh) — official apt repo
-# ---------------------------------------------------------------------------
-
-if ! have gh; then
-  log "Installing GitHub CLI"
-  sudo mkdir -p -m 755 /etc/apt/keyrings
-  wget -nv -O- https://cli.github.com/packages/githubcli-archive-keyring.gpg \
-    | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg >/dev/null
-  sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
-  echo "deb [arch=$DPKG_ARCH signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
-    | sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null
-  sudo apt update
-  sudo apt install -y gh
-  ok "gh installed"
-else
-  ok "gh already installed"
-fi
-
-# ---------------------------------------------------------------------------
-# zoxide + starship (official installer scripts)
-# ---------------------------------------------------------------------------
-
-if ! have zoxide; then
-  log "Installing zoxide"
-  curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
-  ok "zoxide installed"
-else
-  ok "zoxide already installed"
-fi
-
-if ! have starship; then
-  log "Installing starship"
-  curl -sS https://starship.rs/install.sh | sh -s -- --yes
-  ok "starship installed"
-else
-  ok "starship already installed"
-fi
-
-# ---------------------------------------------------------------------------
-# Neovim — apt's version is too old for vim.pack (needs a recent build), so
-# grab the latest official release tarball instead. Falls back to snap on
-# unsupported architectures.
-# ---------------------------------------------------------------------------
-
-if ! have nvim || [[ "$(nvim --version | head -1 | grep -oE '[0-9]+\.[0-9]+' | head -1 | cut -d. -f2)" -lt 11 ]]; then
-  log "Installing latest Neovim"
-  NVIM_ASSET=""
-  case "$UNAME_ARCH" in
-    x86_64)  NVIM_ASSET="nvim-linux-x86_64.tar.gz" ;;
-    aarch64) NVIM_ASSET="nvim-linux-arm64.tar.gz" ;;
-  esac
-  if [[ -n "$NVIM_ASSET" ]] && curl -fsSL -o "$TMP_DIR/nvim.tar.gz" \
-      "https://github.com/neovim/neovim/releases/latest/download/$NVIM_ASSET"; then
-    sudo rm -rf /opt/nvim
-    sudo tar -C /opt -xzf "$TMP_DIR/nvim.tar.gz"
-    sudo mv /opt/nvim-linux-* /opt/nvim
-    sudo ln -sf /opt/nvim/bin/nvim /usr/local/bin/nvim
-    ok "neovim installed to /opt/nvim"
-  else
-    warn "no prebuilt neovim tarball for $UNAME_ARCH, falling back to snap (classic)"
-    sudo snap install nvim --classic
-  fi
-else
-  ok "neovim already installed and recent enough"
-fi
-
-# ---------------------------------------------------------------------------
-# lazygit
-# ---------------------------------------------------------------------------
-
-if ! have lazygit; then
-  log "Installing lazygit"
-  case "$UNAME_ARCH" in
-    x86_64)  LG_ARCH="Linux_x86_64" ;;
-    aarch64) LG_ARCH="Linux_arm64" ;;
-    *) LG_ARCH="" ;;
-  esac
-  if [[ -n "$LG_ARCH" ]] && (
-      set -e
-      LG_TAG="$(gh_latest_tag jesseduffield/lazygit)"
-      LG_VER="${LG_TAG#v}"
-      curl -fsSL -o "$TMP_DIR/lazygit.tar.gz" \
-        "https://github.com/jesseduffield/lazygit/releases/download/${LG_TAG}/lazygit_${LG_VER}_${LG_ARCH}.tar.gz"
-      tar -C "$TMP_DIR" -xzf "$TMP_DIR/lazygit.tar.gz" lazygit
-      sudo install -m755 "$TMP_DIR/lazygit" /usr/local/bin/lazygit
-    ); then
-    ok "lazygit installed"
-  else
-    warn "failed to install lazygit (or no release for $UNAME_ARCH), skipping"
-  fi
-else
-  ok "lazygit already installed"
-fi
-
-# ---------------------------------------------------------------------------
-# yazi
+# yazi — not in Ubuntu's repos yet, install from the latest GitHub release
 # ---------------------------------------------------------------------------
 
 if ! have yazi; then
@@ -208,58 +106,11 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# lf (used by the lf() navigation function in aliases.zsh)
-# ---------------------------------------------------------------------------
-
-if ! have lf; then
-  log "Installing lf"
-  case "$DPKG_ARCH" in
-    amd64) LF_ARCH="amd64" ;;
-    arm64) LF_ARCH="arm64" ;;
-    *) LF_ARCH="" ;;
-  esac
-  if [[ -n "$LF_ARCH" ]] && (
-      set -e
-      LF_TAG="$(gh_latest_tag gokcehan/lf)"
-      curl -fsSL -o "$TMP_DIR/lf.tar.gz" \
-        "https://github.com/gokcehan/lf/releases/download/${LF_TAG}/lf-linux-${LF_ARCH}.tar.gz"
-      tar -C "$TMP_DIR" -xzf "$TMP_DIR/lf.tar.gz" lf
-      sudo install -m755 "$TMP_DIR/lf" /usr/local/bin/lf
-    ); then
-    ok "lf installed"
-  else
-    warn "failed to install lf (or no release for $DPKG_ARCH), skipping"
-  fi
-else
-  ok "lf already installed"
-fi
-
-# ---------------------------------------------------------------------------
-# Ghostty — no official apt package; install via Flathub
-# ---------------------------------------------------------------------------
-
-if ! have flatpak; then
-  log "Installing flatpak"
-  sudo apt install -y flatpak
-fi
-if ! flatpak remote-list | grep -q flathub; then
-  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-fi
-if ! flatpak list | grep -q com.mitchellh.ghostty; then
-  log "Installing Ghostty (flatpak)"
-  flatpak install -y flathub com.mitchellh.ghostty
-  ok "ghostty installed — launch via 'flatpak run com.mitchellh.ghostty' or the app menu"
-else
-  ok "ghostty already installed"
-fi
-
-# ---------------------------------------------------------------------------
-# VS Code — no default apt package; add Microsoft's official repo
+# VS Code — still no apt/universe package, add Microsoft's official repo
 # ---------------------------------------------------------------------------
 
 if ! have code; then
   log "Installing Visual Studio Code"
-  sudo apt install -y wget gpg
   sudo mkdir -p -m 755 /etc/apt/keyrings
   wget -qO- https://packages.microsoft.com/keys/microsoft.asc \
     | gpg --dearmor \
@@ -275,7 +126,8 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Nerd Font (ghostty/config requests "MesloLGS Nerd Font Mono")
+# Nerd Font (ghostty/config requests "MesloLGS Nerd Font Mono") — still not
+# packaged, install from the latest GitHub release
 # ---------------------------------------------------------------------------
 
 FONT_DIR="$HOME/.local/share/fonts/MesloNerdFont"
@@ -300,7 +152,8 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# nvm + Node LTS (sourced by .zshrc)
+# nvm + Node LTS (sourced by .zshrc) — installed via the official script so
+# it lands at ~/.nvm; not packaged in apt
 # ---------------------------------------------------------------------------
 
 export NVM_DIR="$HOME/.nvm"
@@ -388,7 +241,7 @@ fi
 # ---------------------------------------------------------------------------
 
 log "Configuring zsh ZDOTDIR"
-ZSHENV_MARKER="# --- managed by dotfiles install-popos.sh ---"
+ZSHENV_MARKER="# --- managed by dotfiles install-ubuntu.sh ---"
 if ! grep -qF "$ZSHENV_MARKER" /etc/zsh/zshenv 2>/dev/null; then
   sudo tee -a /etc/zsh/zshenv >/dev/null <<EOF
 

@@ -258,6 +258,7 @@ vim.pack.add({
 	},
 	-- Language Server Protocols
 	"https://github.com/mason-org/mason.nvim",
+	"https://github.com/neovim/nvim-lspconfig",
 	"https://github.com/creativenull/efmls-configs-nvim",
 	{
 		src = "https://github.com/saghen/blink.cmp",

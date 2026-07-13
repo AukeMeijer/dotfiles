@@ -33,8 +33,11 @@ warn() { echo -e "${c_yellow}warn${c_reset} $*"; }
 have() { command -v "$1" >/dev/null 2>&1; }
 
 gh_latest_tag() { # $1 = owner/repo
-  curl -fsSL "https://api.github.com/repos/$1/releases/latest" \
-    | grep -m1 '"tag_name"' | cut -d'"' -f4
+  # Reads the redirect target of the release page instead of calling
+  # api.github.com, which rate-limits unauthenticated requests to 60/hr.
+  local url
+  url="$(curl -fsSL -o /dev/null -w '%{url_effective}' "https://github.com/$1/releases/latest")"
+  basename "$url"
 }
 
 # ---------------------------------------------------------------------------
@@ -108,9 +111,15 @@ fi
 export NVM_DIR="$HOME/.nvm"
 if [[ ! -s "$NVM_DIR/nvm.sh" ]]; then
   log "Installing nvm"
-  NVM_TAG="$(gh_latest_tag nvm-sh/nvm)"
-  curl -fsSL "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_TAG}/install.sh" | bash
-  ok "nvm installed"
+  if (
+      set -e
+      NVM_TAG="$(gh_latest_tag nvm-sh/nvm)"
+      curl -fsSL "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_TAG}/install.sh" | bash
+    ); then
+    ok "nvm installed"
+  else
+    warn "failed to install nvm, skipping"
+  fi
 else
   ok "nvm already installed"
 fi
@@ -132,7 +141,7 @@ mkdir -p "$HOME/.config"
 for entry in "$DOTFILES_DIR"/*; do
   name="$(basename "$entry")"
   case "$name" in
-    .git|.DS_Store|install-popos.sh|install-macos.sh|.claude) continue ;;
+    .git|.DS_Store|install-popos.sh|install-macos.sh|install-ubuntu.sh|.claude) continue ;;
   esac
   target="$HOME/.config/$name"
   if [[ -e "$target" && ! -L "$target" ]]; then
