@@ -67,7 +67,7 @@ brew update
 log "Installing CLI tools"
 brew install \
   zsh neovim eza bat fd fzf zoxide starship ripgrep \
-  yazi lazygit lf gh htop mpv git \
+  yazi lazygit lf gh htop mpv git tree-sitter \
   ffmpegthumbnailer poppler sevenzip jq imagemagick unar
 ok "CLI tools installed"
 

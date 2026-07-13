@@ -109,6 +109,36 @@ else
 fi
 
 # ---------------------------------------------------------------------------
+# tree-sitter CLI — nvim-treesitter's "main" branch shells out to
+# `tree-sitter build` to compile parsers (nvim/init.lua's setup_treesitter),
+# not in Ubuntu's repos, install the prebuilt binary from the latest GitHub
+# release
+# ---------------------------------------------------------------------------
+
+if ! have tree-sitter; then
+  log "Installing tree-sitter CLI"
+  case "$UNAME_ARCH" in
+    x86_64)  TS_ASSET="tree-sitter-linux-x64.gz" ;;
+    aarch64) TS_ASSET="tree-sitter-linux-arm64.gz" ;;
+    *) TS_ASSET="" ;;
+  esac
+  if [[ -n "$TS_ASSET" ]] && (
+      set -e
+      TS_TAG="$(gh_latest_tag tree-sitter/tree-sitter)"
+      curl -fsSL -o "$TMP_DIR/tree-sitter.gz" \
+        "https://github.com/tree-sitter/tree-sitter/releases/download/${TS_TAG}/${TS_ASSET}"
+      gunzip -f "$TMP_DIR/tree-sitter.gz"
+      sudo install -m755 "$TMP_DIR/tree-sitter" /usr/local/bin/tree-sitter
+    ); then
+    ok "tree-sitter CLI installed"
+  else
+    warn "failed to install tree-sitter CLI (or no release for $UNAME_ARCH), skipping"
+  fi
+else
+  ok "tree-sitter CLI already installed"
+fi
+
+# ---------------------------------------------------------------------------
 # yazi — not in Ubuntu's repos yet, install from the latest GitHub release
 # ---------------------------------------------------------------------------
 
