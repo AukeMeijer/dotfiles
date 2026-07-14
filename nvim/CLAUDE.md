@@ -40,6 +40,7 @@ Formatters/linters per language:
 - C/C++: clang_format + cpplint
 - Shell: shfmt + shellcheck
 - JSON: fixjson + eslint_d
+- CSS/HTML: prettier_d
 
 ## Completion
 
@@ -51,7 +52,7 @@ C/C++ debugging uses `nvim-dap` + `nvim-dap-ui` (+ `nvim-nio` as a dapui depende
 
 ## Mini.nvim modules in use
 
-`mini.ai`, `mini.comment`, `mini.move`, `mini.surround`, `mini.cursorword`, `mini.indentscope`, `mini.pairs`, `mini.trailspace`, `mini.bufremove`, `mini.notify`, `mini.icons`, `mini.diff` (git signs + hunk navigation), `mini.git` (blame/show).
+`mini.ai`, `mini.comment`, `mini.move`, `mini.surround`, `mini.cursorword`, `mini.indentscope`, `mini.pairs`, `mini.trailspace`, `mini.bufremove`, `mini.notify`, `mini.icons`, `mini.diff` (git signs + hunk navigation), `mini.git` (blame/show), `mini.clue` (which-key-style popup for `<leader>`, `[`, `]`, `g`, marks, registers, `<C-w>`, `z` triggers).
 
 ## Floating terminal
 

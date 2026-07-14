@@ -55,9 +55,10 @@ updates or finish a partial install.
 | [`envman`](envman) | envman | `PATH`/`ENV`/alias/function files sourced by the shell |
 | [`homebrew/`](homebrew), [`github-copilot/`](github-copilot), [`cagent/`](cagent), [`composer/`](composer) | Misc | App-managed state, kept here mostly to track/back up |
 
-Several directories have their own `CLAUDE.md` with deeper notes for whoever
-(human or Claude Code) is editing that tool's config, and `zsh/` has a
-dedicated `README.md` and `KEYBINDINGS.md`.
+The top-level [`CLAUDE.md`](CLAUDE.md) covers repo-wide conventions for
+Claude Code; several directories additionally have their own `CLAUDE.md` with
+deeper notes for whoever (human or Claude Code) is editing that tool's
+config, and `zsh/` has a dedicated `README.md` and `KEYBINDINGS.md`.
 
 ## Structure conventions
 

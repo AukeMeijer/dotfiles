@@ -70,8 +70,16 @@ sudo apt install -y \
   build-essential curl wget git unzip zip file gpg ca-certificates \
   zsh ripgrep fd-find bat htop mpv fontconfig fzf \
   ffmpegthumbnailer poppler-utils p7zip-full jq imagemagick unar \
-  eza gh zoxide starship lazygit lf ghostty
+  eza gh zoxide starship lazygit lf ghostty \
+  golang-go luarocks python3-venv
 ok "packages installed"
+
+# golang-go / luarocks / python3-venv above aren't used directly by this
+# script — they're runtime prerequisites Mason (nvim/init.lua) shells out to
+# when installing gopls/gofumpt/revive, luacheck, and black/flake8/cpplint
+# respectively. Debian/Ubuntu splits venv+pip out of the base python3
+# package (unlike macOS's python3), so python3-venv silently breaks those
+# Mason installs if missing.
 
 # Ubuntu ships bat/fd under different binary names (batcat/fdfind) to avoid
 # clashing with unrelated packages already using "bat" and "fd" — symlink to
